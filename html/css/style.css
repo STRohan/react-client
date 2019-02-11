@@ -1,0 +1,46 @@
+.container {
+    margin: 100px;
+    border: .5px;
+    box-shadow: 2px 2px 5px black;
+}
+.align{
+    padding-right: 10px;
+    text-align:right;
+}
+.row{
+    background-color:white;
+    display: flex;
+    position: relative;
+    border: 1px solid black;
+    align-items: center;
+    padding: 10px
+}
+.row ul {
+    display: flex;
+}
+li:after {
+    padding: 5px;
+    content: " / ";
+    
+}
+li:last-child:after {
+    content: " ";
+}
+.row >* {
+    justify-content: space-between;
+    flex : 1
+} 
+.row2 {
+    display: flex;
+    background-color:white;
+    border: 1px solid black;
+}
+.entry{
+    padding: 10px;
+    flex: 3;
+    background-color: lightgray;
+}
+#r{
+    padding: 10px;
+    flex: 5
+}
