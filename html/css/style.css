@@ -1,46 +1,57 @@
 .container {
     margin: 100px;
     border: .5px;
-    box-shadow: 2px 2px 5px black;
+    box-shadow: 5px 5px 10px rgb(158, 157, 157);
 }
 .align{
     padding-right: 10px;
     text-align:right;
 }
-.row{
+.row1{
     background-color:white;
     display: flex;
     position: relative;
-    border: 1px solid black;
+    border: 1px solid rgb(238, 236, 236);
     align-items: center;
     padding: 10px
 }
-.row ul {
+.co-status{
+    display: flex;
+    flex:4;
+}
+.co-status-0{
+    font-weight: bold;
+    display: flex;
+    flex:1
+}
+.co-status-1{
+    display: flex;
+}
+.co-status-2{
+    font-weight: bold;
+    display: flex;
+}
+.co-status-3{
     display: flex;
 }
 li:after {
-    padding: 5px;
+    padding: 0px 5px;
     content: " / ";
-    
 }
 li:last-child:after {
     content: " ";
 }
-.row >* {
-    justify-content: space-between;
-    flex : 1
-} 
 .row2 {
     display: flex;
     background-color:white;
-    border: 1px solid black;
+    border: 1px solid rgb(238, 236, 236);
 }
 .entry{
     padding: 10px;
     flex: 3;
     background-color: lightgray;
 }
-#r{
+.co-row2-pay{
     padding: 10px;
     flex: 5
 }
