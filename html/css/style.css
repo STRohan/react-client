@@ -17,22 +17,15 @@
 }
 .co-status{
     display: flex;
+    /* list-style: none; */
     flex:4;
 }
 .co-status-0{
     font-weight: bold;
-    display: flex;
     flex:1
-}
-.co-status-1{
-    display: flex;
 }
 .co-status-2{
     font-weight: bold;
-    display: flex;
-}
-.co-status-3{
-    display: flex;
 }
 li:after {
     padding: 0px 5px;
@@ -41,17 +34,180 @@ li:after {
 li:last-child:after {
     content: " ";
 }
+.co-pay-img {
+    display: flex;
+
+}
+.co-pay-img >* {
+    padding: 20px;
+
+}
+
+.co-img-text{
+    position: relative;
+    left: 4%;
+    text-align: left;
+}
 .row2 {
     display: flex;
     background-color:white;
     border: 1px solid rgb(238, 236, 236);
 }
 .entry{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 10px;
     flex: 3;
-    background-color: lightgray;
+    background-color: rgb(246, 243, 243);
 }
 .co-row2-pay{
     padding: 10px;
     flex: 5
+}
+.co-card-master {
+    text-align: center;
+    background-color: rgb(226, 226, 226);
+    border: 1px solid rgb(197, 197, 197);
+}
+.co-items {
+    display: flex;
+    position: relative;
+    align-items: center;
+    padding: 0px 0px;
+    
+}
+.co-items >*{
+    padding: 0px 10px;
+}
+.co-items-img{
+    padding: 1px;
+    background-color: lightgrey;
+}
+.co-items-info{
+    padding: 0px 10px;
+
+    flex: 3;
+}
+h1{
+    font-size: 25px;
+    color: black;
+    font-weight: bold;
+}
+h2{
+    position: relative;
+    font-size: 18px;
+    color:grey;
+    font-weight: bolder;
+}
+h3{
+    position: relative;
+    font-size: 16px;
+    color:black;
+    font-weight: bolder;
+}
+h4{
+    position: relative;
+    font-size: 14px;
+    color:gray;
+}
+h5{
+    position: relative;
+    font-size: 12px;
+    color:grey;
+    font-weight: bold;
+}
+h6{
+    position: relative;
+    font-size: 10px;
+    color:gray;
+    font-weight: bolder;
+}
+.co-items-price{
+    font-weight: bold;
+    text-align: right;
+}
+.co-items-img-style{
+    width: 80px;
+    color: white;
+    padding: 5px;
+}
+.co-price{
+    display: flex;
+
+}
+.co-price-info{
+    flex:3;
+}
+.co-price-total >* {
+    text-align: right;
+}
+.co-total {
+    font-weight: bold;
+    flex:3;
+}
+.co-total-amt {
+    font-weight: bold;
+    text-align: right;
+}
+.co-pay-data {
+    display: flex;
+    flex-direction:column;
+    text-align: center;
+    padding: 10px;
+}
+.co-pay-data >*{
+    padding: 5px 0px;
+}
+.co-card-text-doe {
+    width: 116px;
+    padding: 18px 10px;
+    margin: 10px 10px;
+    justify-content: space-between;
+}
+.co-card-text {
+    display: flex;
+    flex-direction: row;
+}
+.co-card-text-cvv { 
+    width: 20px;
+    padding: 18px 32px;
+    margin: 10px 11px;
+    justify-content: space-between;
+
+
+}.pay-entry {
+    display: flex;
+    flex-direction: column;
+}
+.pay-entry-detail1 {
+    justify-content: center;
+    display: flex;
+    text-align: center;
+    padding: 0px 10px;
+
+
+}
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 21px 65px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 300px;
+    cursor: pointer;
+}  
+.co-input-text{
+    padding: 18px 10px;
+    margin: 10px 11px;
+    width: 276px;
+    justify-content: space-between;
+
+}
+.co-button-pos{
+    text-align: center;
+
 }
