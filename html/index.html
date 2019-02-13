@@ -9,23 +9,121 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Test Webpage</title>
     <style>
+html {
+    height: 100%;
+    width: 100%;
+    background: #ddd url("./images/background.jpg");
+}
 </style>
 </head>
-<body>
-        <div class ="container">
-                <div class ="row1">
-                <div class="co-status-0">Checkout</div>
-                <ul class="co-status" >
-                    <li class="co-status-1">Shipping</li>
-                    <li class="co-status-2">Payment Method</li>
-                    <li class="co-status-3">Confirmation</li>
-                </ul>
-                <div class="fa fa-window-close align" aria-hidden="true" > </div>
-                </div>
-                <div class ="row2">
-                    <div class="co-row2-pay">Payment Block</div>
-                        <div class= "entry">Cart Block</div>
+<body >
+    <div class ="container">
+        <div class ="row1">
+            <div class="co-status-0">Checkout</div>
+            <ul class="co-status" >
+                <li >Shipping</li>
+                <li class="co-status-2">Payment Method</li>
+                <li >Confirmation</li>
+            </ul>
+            <div class="fa fa-window-close align" aria-hidden="true" > </div>
+        </div>
+        <div class ="row2">
+            <div class="co-row2-pay" >
+                <div> <h2>Wallet</h2><hr></div>
+                <div class="co-pay-img">
+                    <div > 
+                        <div><img src="images/cards/discover.png" alt="Not Available" width="90%" ></div>
+                        <div> Ending with 8899 </div>
                     </div>
+                    <div class="co-card-master">
+                        <div><img src="images/cards/mastercard.png" alt="Not Available" width="90%" ></div>
+                        <div class="co-img-text">  Ending with 8899  </div>
+                    </div>
+                    <div >
+                        <div><img src="images/cards/visa.png" alt="Not Available" width="90%" ></div>
+                        <div> Ending with 8899 </div>
+                    </div>
+                </div>
+                <div><h2>New Card</h2><hr></div>
+                <div class="pay-entry">
+                <div class =" co-pay-data" >
+                    <div> <input type="text" class="co-input-text" name="card" placeholder="Name on Card"></div>
+                    <div> <input type="text" class="co-input-text" placeholder="XXXX-XXXX-XXXX"></div>
+                    <div class="pay-entry-detail1"> 
+                            <div class="co-card-text" ><input type="text"class="co-card-text-doe  " placeholder="MM/YY" >
+                            <input type="text" class="co-card-text-doe " placeholder="CVV"></div>
+                    </div>
+                </div>
+                    <div class="co-button-pos"> <button class="button ">CONTINUE</button></div>
+                </div>
+            </div>
+            <div class= "entry">
+                <div>
+                <div class="co-items">
+                    <div class="co-items-img"> <img src="images/items/mobile-holder.jpg" alt="Not Available" class="co-items-img-style" ></div>
+                    <div class="co-items-info">
+                            <div> <h3> Mobile Holder</h3></div>
+                            <div> <h6>Black </h6></div>
+                            <div><h5>Quantity:1</h5></div>
+                    </div>
+                    <div class="co-items-price"> <h4>$10.00</h4></div>
+                    
+                </div>
+                <hr>
+                <div class="co-items">
+                    <div class="co-items-img"> <img src="images/items/rado.jpg" alt="Not Available" class="co-items-img-style" ></div>
+                    <div class="co-items-info">
+                        <div> <h3> Rado Watch</h3></div>
+                        <div> <h6>Black </h6></div>
+                        <div><h5>Quantity:1</h5></div>
+                    </div>
+                    <div class="co-items-price"> <h4>$10.00</h4></div>
+                </div>
+                <hr>
+                <div class="co-items">
+                    <div class="co-items-img"> <img src="images/items/usb-c-2-micro.jpeg" alt="Not Available" class="co-items-img-style" ></div>
+                    <div class="co-items-info">
+                        <div> <h3> C type to Micro Converter</h3></div>
+                        <div> <h6>Black </h6></div>
+                        <div><h5>Quantity:1</h5></div>
+                        </div>
+                        <div class="co-items-price"> <h4>$10.00</h4></div>
+                </div>
+                <hr>
+                <div class="co-items">
+                    <div class="co-items-img"> <img src="images/items/hard-case.jpg" alt="Not Available" class="co-items-img-style" ></div>
+                    <div class="co-items-info">
+                        <div> <h3> Mobile Case</h3></div>
+                        <div> <h6>Black </h6></div>
+                        <div><h5>Quantity:1</h5></div>
+                    </div>
+                    <div class="co-items-price"> <h4>$10.00</h4></div>
+                </div>
+            </div>
+            <div>
+                <hr>
+                
+                <div class= "co-price">
+                    <div class= "co-price-info">
+                            <div> Sub Total </div>
+                            <div> Shipping</div>
+                            <div> Taxes</div>
+                    </div>
+                    <div class="co-price-total"> 
+                            <div> $100.00</div>
+                            <div> $10.00</div>
+                            <div> $5.00</div>
+                    </div>
+            </div>
+            <hr>
+                <div class= "co-price"> 
+                    <div class= "co-total"> Total</div>
+                    <div class="co-total-amt"> $115.00</div>
                 </div> 
+            </div>
+            </div>
+
+        </div>
+    </div> 
 </body>
 </html>
