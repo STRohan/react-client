@@ -261,11 +261,12 @@ h6{
     .co-items-img {
         flex-direction: column;
     }
-    .co-status-0{
-        font-size: 70%;
+
+    .co-status-2{
+        display: none;
     }
     .co-status{
-        font-size: 80%;
+        display: none;
     }
     .co-pay-img{
         flex-direction: column;
