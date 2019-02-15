@@ -1,5 +1,5 @@
 .container {
-    margin: 100px;
+    margin: 40px 100px;
     border: .5px;
     box-shadow: 5px 5px 10px rgb(158, 157, 157);
 }
@@ -8,6 +8,7 @@
     text-align:right;
 }
 .row1{
+    justify-content: space-between;
     background-color:white;
     display: flex;
     position: relative;
@@ -27,13 +28,13 @@
 .co-status-2{
     font-weight: bold;
 }
-li:after {
+li+li:before {
     padding: 0px 5px;
     content: " / ";
 }
-li:last-child:after {
+/* li:last-child:after {
     content: " ";
-}
+} */
 .co-pay-img {
     display: flex;
 
@@ -49,6 +50,7 @@ li:last-child:after {
     text-align: left;
 }
 .row2 {
+    justify-content: space-between;
     display: flex;
     background-color:white;
     border: 1px solid rgb(238, 236, 236);
@@ -58,12 +60,12 @@ li:last-child:after {
     flex-direction: column;
     justify-content: space-between;
     padding: 10px;
-    flex: 3;
+    flex: 2;
     background-color: rgb(246, 243, 243);
 }
 .co-row2-pay{
     padding: 10px;
-    flex: 5
+    flex: 3
 }
 .co-card-master {
     text-align: center;
@@ -81,6 +83,7 @@ li:last-child:after {
     padding: 0px 10px;
 }
 .co-items-img{
+    flex:1;
     padding: 1px;
     background-color: lightgrey;
 }
@@ -128,7 +131,7 @@ h6{
     text-align: right;
 }
 .co-items-img-style{
-    width: 80px;
+    width: 80%;
     color: white;
     padding: 5px;
 }
@@ -160,7 +163,7 @@ h6{
     padding: 5px 0px;
 }
 .co-card-text-doe {
-    width: 116px;
+    width: 45%;
     padding: 18px 10px;
     margin: 10px 10px;
     justify-content: space-between;
@@ -170,7 +173,7 @@ h6{
     flex-direction: row;
 }
 .co-card-text-cvv { 
-    width: 20px;
+    width: 50%;
     padding: 18px 32px;
     margin: 10px 11px;
     justify-content: space-between;
@@ -192,18 +195,18 @@ h6{
     background-color: #4CAF50; /* Green */
     border: none;
     color: white;
-    padding: 21px 65px;
+    padding: 21px ;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    width: 300px;
+    width: 53%;
     cursor: pointer;
 }  
 .co-input-text{
     padding: 18px 10px;
     margin: 10px 11px;
-    width: 276px;
+    width: 50%;
     justify-content: space-between;
 
 }
@@ -211,3 +214,68 @@ h6{
     text-align: center;
 
 }
+ /* medai controll */
+
+@media only screen and (max-width: 992px) {
+    .container {
+        margin: 0px 20px;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+    div.co-row2-pay {
+        flex: 1;
+    }
+    div.co-items-img-style{
+        width: 50px;
+    }
+
+    div.entry {
+        flex: 1;
+    }
+}
+
+
+
+@media only screen and (max-width: 600px) {
+    body {
+        overflow: visible;
+    }
+    .container {
+        margin: 20px 0px;
+    }
+    .row2  {
+        flex-direction: column;
+    }
+    div.co-entry {
+        order: 2;
+    }
+
+    div.co-row2-pay {
+        order: 1;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+
+    .co-items-img {
+        flex-direction: column;
+    }
+
+    .co-status-2{
+        display: none;
+    }
+    .co-status{
+        display: none;
+    }
+    .co-pay-img{
+        flex-direction: column;
+    }
+    .co-status >* {
+        font-size: 90%;
+    } 
+    .align{
+        width: 70%;
+    }
+}
+
