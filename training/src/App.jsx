@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import TextFileDemo from './pages/index';
 
-class App extends Component {
-  render() {
-    return (<div >
-      <TextFileDemo/>
-    </div>);
-  }
-}
+const App = () => (
+  <div>
+    <TextFileDemo />
+  </div>
+);
+// class App extends Component {
+//   render() {
+
+//   }
+// }
 
 export default App;

@@ -77,7 +77,7 @@ li+li:before {
     position: relative;
     align-items: center;
     padding: 0px 0px;
-    
+
 }
 .co-items >*{
     padding: 0px 10px;
@@ -162,21 +162,26 @@ h6{
 .co-pay-data >*{
     padding: 5px 0px;
 }
-.co-card-text-doe {
-    width: 45%;
-    padding: 18px 10px;
-    margin: 10px 10px;
-    justify-content: space-between;
-}
 .co-card-text {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  width: 56%;
+  justify-content: space-between;
 }
-.co-card-text-cvv { 
-    width: 50%;
-    padding: 18px 32px;
-    margin: 10px 11px;
-    justify-content: space-between;
+.co-card-text-doe {
+    width: 56%;
+    flex:1;
+    padding: 18px 10px;
+    /* margin: 10px 10px;  */
+    align-content: right;
+}
+
+.co-card-text-cvv {
+    width: 40%;
+    flex:1;
+    padding: 18px 10px;
+    margin-left: 10px;
+    align-self: left;
 
 
 }.pay-entry {
@@ -202,7 +207,7 @@ h6{
     font-size: 16px;
     width: 53%;
     cursor: pointer;
-}  
+}
 .co-input-text{
     padding: 18px 10px;
     margin: 10px 11px;
@@ -273,7 +278,7 @@ h6{
     }
     .co-status >* {
         font-size: 90%;
-    } 
+    }
     .align{
         width: 70%;
     }

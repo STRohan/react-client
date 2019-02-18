@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "commitizen": "^3.0.5",
+    "prop-types": "^15.7.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-scripts": "2.1.5"
@@ -12,7 +13,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:c": "npm run test -- --coverage",
+    "eject": "react-scripts eject",
+    "lint": "npm run start ",
+    "commit": "npx git-cz",
+    "lint:fix": "eslint --fix --ext .js,.vue src"
   },
   "hooks": {
     "pre-commit": "npm run lint && npm run test:c",
