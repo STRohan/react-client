@@ -1,11 +1,15 @@
 import React from 'react';
+import { InputFileDemo } from './pages/index';
 
-import TextFileDemo from './pages/index';
-
-const App = () => (
+const App = event => (
   <div>
-    <TextFileDemo />
+    <InputFileDemo onChange={event} />
   </div>
+
+
+  // <div>
+  //   <TextFileDemo />
+  // </div>
 );
 // class App extends Component {
 //   render() {
