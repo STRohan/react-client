@@ -9,7 +9,7 @@ const TextField = (props) => {
     value,
     options,
   } = props;
-  const error = (err) ? style.err : {};
+  const error = (err.length) ? style.err : {};
   return (
     <>
       {options.map(option => (
@@ -18,7 +18,7 @@ const TextField = (props) => {
           {option.label}
         </label>
       ))}
-      {(err) ? <p style={{ ...error }}>{err}</p> : '' }
+      {(err.length) ? <p style={{ ...error }}>{err}</p> : '' }
     </>
   );
 };
