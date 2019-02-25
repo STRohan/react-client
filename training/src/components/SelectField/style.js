@@ -7,5 +7,10 @@ const style = {
     justifyContent: 'space-between',
     color: 'black',
   },
+  err: {
+    color: 'red',
+    fontWeight: 'bold',
+    borderColor: 'red',
+  },
 };
 export default style;

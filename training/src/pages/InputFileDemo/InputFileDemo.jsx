@@ -7,13 +7,14 @@ import Button from '../../components/Button/Button';
 import style from './style';
 import { footballEntries, cricketEntries, sportSelect } from '../../configs/constants';
 
+// eslint-disable-next-line no-unused-vars
+let isExist = false;
 const schema = yup.object().shape({
-  name: yup.string().required().min(3).label('Name'),
+  name: yup.string().required().label('Name').min(3),
   sport: yup.string().required().label('Sport'),
-  // cricket: yup.string(),
-  // football: yup.string(),
-  // role: yup.string().required(),
+  role: yup.string().required().label('What do you do '),
 });
+
 class InputFileDemo extends Component {
   constructor(props) {
     super(props);
@@ -23,88 +24,117 @@ class InputFileDemo extends Component {
       football: '',
       cricket: '',
       err: {},
-
+      isTouch: {
+        name: false,
+        sport: false,
+        role: false,
+      },
+      hasError: {
+        name: false,
+        sport: false,
+        role: false,
+      },
     };
   }
 
-  validation = async () => {
-    const { err, ...rest } = this.state;
-    const valid = await schema.validate(rest);
-    console.log('vaild', valid);
-    return valid;
-  };
-
-  changeHandler = (event) => {
-    this.setState({ name: event.target.value, err: '' });
-  };
-
   errorHandler = (field) => {
-    const allerrors = {};
-    const { name } = this.state;
-    schema.validate({ name }, { abortEarly: false })
-      .then(
-        this.setState({ err: {} }),
-      )
+    const {
+      name,
+      sport,
+      football,
+      cricket,
+      hasError,
+      err,
+    } = this.state;
+    const allErrors = { ...err };
+    const role = football || cricket;
+    schema.validate({ name, sport, role }, { abortEarly: false })
+      .then(() => {
+        hasError[field] = false;
+        allErrors[field] = '';
+        this.setState({ err: {}, hasError });
+      })
       .catch((error) => {
         error.inner.forEach((element) => {
-          allerrors[field.path] = element.message;
+          if (element.path === field) {
+            isExist = true;
+            allErrors[field] = element.message;
+            hasError[field] = true;
+          }
         });
-        this.setState({ err: allerrors });
-        console.log('000', allerrors);
+        this.setState({ err: allErrors, hasError });
       });
   }
 
-  onBlurHandler = field => (event) => {
-    console.log('BLURRRRRRR', field, event.target.value);
+  onBlurHandler = field => () => {
     this.errorHandler(field);
-    // schema.validate({ name: this.state.name }, { abortEarly: false })
-    //   .then()
-    //   .catch((ek) => {
-
-    //     console.log(ek);
-    //     this.setState({ err: ek.errors });
-    //   });
   }
 
-  sportHandler = (event) => {
-    this.setState({ sport: event.target.value, cricket: '', football: '' });
-  };
-
-
-  entryHandler = (event) => {
-    const { sport } = this.state;
+  changeHandler = field => (event) => {
+    const { isTouch } = this.state;
     this.setState({
-      cricket: (sport === 'cricket') ? event.nativeEvent.target.value : '',
-      football: (sport === 'football') ? event.nativeEvent.target.value : '',
+      err: {},
+      [field]: event.target.value,
+      isTouch: { ...isTouch, [field]: true },
     });
   };
 
-  render() {
+  hasError = () => {
+    const { hasError, isTouch } = this.state;
+    let check = 0;
+    let touchCheck = 0;
+    Object.keys(hasError).forEach((element) => {
+      if (!hasError[element]) check += 1;
+    });
+    Object.keys(isTouch).forEach((element) => {
+      if (isTouch[element]) touchCheck += 1;
+    });
+    return !(check === 3 && touchCheck === 3);
+  }
+
+  entryHandler = (event) => {
+    const { sport, isTouch } = this.state;
+    this.setState({
+      cricket: (sport === 'cricket') ? event.nativeEvent.target.value : '',
+      football: (sport === 'football') ? event.nativeEvent.target.value : '',
+      isTouch: { ...isTouch, role: true },
+    });
+  };
+
+  sportComponentDisplay =() => {
     const {
-      name, sport, cricket, football, err,
+      sport, cricket, football, err,
     } = this.state;
     const sportVal = (sport === 'cricket') ? cricketEntries : footballEntries;
     const RadioVal = cricket || football;
+    return (
+      <div style={style.base}>
+        <h3>What do you do?</h3>
+        <RadioGroup value={RadioVal} err={err.role} options={sportVal} onBlur={this.onBlurHandler('role')} onChange={this.entryHandler} />
+      </div>
+    );
+  }
+
+  render() {
+    const {
+      name, sport, err,
+    } = this.state;
+    const sub = this.hasError();
     console.log('STATE::::::', this.state);
     return (
       <>
         <div>
           <h3>Name</h3>
-          <TextField value={name} err={err.name} onChange={this.changeHandler} onBlur={this.onBlurHandler('name')} />
+          <TextField value={name} err={err.name} onChange={this.changeHandler('name')} onBlur={this.onBlurHandler('name')} />
         </div>
         <div>
           <h3>Select the game you want to play</h3>
-          <SelectField value={sport} err={err.sport} options={sportSelect} onBlur={this.onBlurHandler('sport')} onChange={this.sportHandler} />
+          <SelectField value={sport} err={err.sport} options={sportSelect} onChange={this.changeHandler('sport')} onBlur={this.onBlurHandler('sport')} />
         </div>
-        { (sport.length) ? (
-          <div style={style.base}>
-            <h3>What do you do?</h3>
-            <RadioGroup value={RadioVal} options={sportVal} onChange={this.entryHandler} />
-          </div>
-        ) : '' }
+        { (sport) && this.sportComponentDisplay() }
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
-          <Button style={style.button} value="Click" />
-          <Button disabled style={style.button} value="Submit" />
+          <Button style={style.button} value="Cancel" />
+          <Button disabled={sub} style={style.buttonEn} value="Submit" />
         </div>
       </>
     );

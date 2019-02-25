@@ -8,13 +8,14 @@ const TextField = (props) => {
     onChange,
     value,
     options,
+    ...rest
   } = props;
   const error = (err.length) ? style.err : {};
   return (
     <>
       {options.map(option => (
         <label htmlFor={option.label}>
-          <input type="radio" id={option.label} value={option.label} checked={option.label === value} onChange={onChange} />
+          <input type="radio" id={option.label} value={option.label} {...rest} checked={option.label === value} onChange={onChange} />
           {option.label}
         </label>
       ))}
