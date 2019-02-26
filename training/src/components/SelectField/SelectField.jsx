@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import style from './style';
 
-const TextField = (props) => {
+const SelectField = (props) => {
   const {
     err,
     onChange,
@@ -28,18 +28,18 @@ const TextField = (props) => {
   );
 };
 
-TextField.propTypes = {
+SelectField.propTypes = {
   defaultText: PropTypes.string,
   err: PropTypes.string,
   onChange: PropTypes.func,
   options: PropTypes.arrayOf(PropTypes.object),
   value: PropTypes.string,
 };
-TextField.defaultProps = {
+SelectField.defaultProps = {
   defaultText: 'Select Field',
   err: '',
   onChange: () => {},
   options: [],
   value: '',
 };
-export default TextField;
+export default SelectField;
