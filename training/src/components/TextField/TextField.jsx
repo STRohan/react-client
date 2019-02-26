@@ -9,11 +9,11 @@ const TextField = (props) => {
     value,
     ...rest
   } = props;
-  const error = (err) ? style.err : {};
+  const error = (err.length) ? style.err : {};
   return (
     <>
       <input type="text" onChange={onChange} value={value} {...rest} style={{ ...style.base, ...error }} />
-      {(err) ? <p style={{ ...error }}>{err}</p> : '' }
+      {(err.length) ? <p style={{ ...error }}>{err}</p> : '' }
     </>
   );
 };

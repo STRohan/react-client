@@ -1,40 +1,36 @@
-const style = {
+const styleButton = {
   base: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  button: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: 'inline-block',
     padding: '6px 12px',
-    margin: '10px',
+    marginBottom: '0',
     fontSize: '14px',
     fontWeight: '400',
-    justifyContent: 'flex-end',
     textAlign: 'center',
+    verticalAlign: 'middle',
     touchAction: 'manipulation',
     cursor: 'pointer',
     userSelect: 'none',
     border: '1px solid transparent',
     borderRadius: '4px',
   },
-  buttonEn: {
-    color: 'white',
+  dis: {
+    color: 'grey',
+    display: 'inline-block',
+    padding: '6px 12px',
+    margin: '10px 20px 10px 10px',
+    fontSize: '14px',
+    fontWeight: '400',
+    textAlign: 'center',
+    verticalAlign: 'middle',
+    touchAction: 'manipulation',
+    cursor: 'pointer',
+    userSelect: 'none',
+    border: '1px solid transparent',
+    borderRadius: '4px',
+  },
+  primary: {
     backgroundColor: 'green',
-    display: 'flex',
-    flexDirection: 'row',
-    padding: '6px 12px',
-    margin: '10px',
-    fontSize: '14px',
-    fontWeight: '400',
-    justifyContent: 'flex-end',
-    textAlign: 'center',
-    touchAction: 'manipulation',
-    cursor: 'pointer',
-    userSelect: 'none',
-    border: '1px solid transparent',
-    borderRadius: '4px',
+    textColor: 'white',
   },
 };
-
-export default style;
+export default styleButton;

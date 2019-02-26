@@ -12,18 +12,18 @@ const TextField = (props) => {
     options,
     ...rest
   } = props;
-  const error = (err) ? style.err : {};
+  const error = (err.length) ? style.err : {};
   return (
     <>
-      <select onChange={onChange} value={value} checked {...rest} style={{ ...style.base, ...error }}>
-        <option value="">{defaultText}</option>
+      <select onChange={onChange} value={value} checked {...rest} style={{ ...style.base }}>
+        <option key="" value="">{defaultText}</option>
         {options.map(option => (
           <option key={option.label} value={option.value}>
             {option.label}
           </option>
         ))}
       </select>
-      {(err) ? <p style={{ ...error }}>{err}</p> : '' }
+      {(err.length) ? <p style={{ ...error }}>{err}</p> : '' }
     </>
   );
 };
