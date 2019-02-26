@@ -95,6 +95,7 @@ class InputFileDemo extends Component {
   entryHandler = (event) => {
     const { sport, isTouch } = this.state;
     this.setState({
+      [sport]: event.nativeEvent.target.value,
       cricket: (sport === 'cricket') ? event.nativeEvent.target.value : '',
       football: (sport === 'football') ? event.nativeEvent.target.value : '',
       isTouch: { ...isTouch, role: true },

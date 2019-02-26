@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import style from './style';
 
-const TextField = (props) => {
+const RadioField = (props) => {
   const {
     err,
     onChange,
@@ -14,7 +14,7 @@ const TextField = (props) => {
   return (
     <>
       {options.map(option => (
-        <label htmlFor={option.label}>
+        <label htmlFor={option.label} key={option.label}>
           <input type="radio" id={option.label} value={option.label} {...rest} checked={option.label === value} onChange={onChange} />
           {option.label}
         </label>
@@ -24,16 +24,16 @@ const TextField = (props) => {
   );
 };
 
-TextField.propTypes = {
+RadioField.propTypes = {
   err: PropTypes.string,
   onChange: PropTypes.func,
   options: PropTypes.arrayOf(PropTypes.object),
   value: PropTypes.string,
 };
-TextField.defaultProps = {
+RadioField.defaultProps = {
   err: '',
   onChange: () => {},
   options: [],
   value: '',
 };
-export default TextField;
+export default RadioField;
