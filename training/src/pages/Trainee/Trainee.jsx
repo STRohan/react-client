@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 // import { Typography } from '@material-ui/core';
 import AddDialog from './components/AddDialog/AddDialog';
+import Navbar from '../components/Navbar/Navbar';
 
 class Trainee extends React.Component {
   state = {
@@ -25,7 +26,9 @@ class Trainee extends React.Component {
     const { open } = this.state;
     return (
       <>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+        <Navbar />
+
+        <Button style={{ margin: 10 }} variant="outlined" color="primary" onClick={this.handleClickOpen}>
       Add Trainee
         </Button>
         {(!open) ? '' : (
