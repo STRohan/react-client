@@ -121,7 +121,6 @@ class InputFileDemo extends Component {
       name, sport, err,
     } = this.state;
     const sub = this.hasError();
-    console.log('STATE::::::', this.state);
     return (
       <>
         <div>
