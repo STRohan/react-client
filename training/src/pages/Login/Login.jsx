@@ -58,7 +58,7 @@ const schema = yup.object().shape({
 // eslint-disable-next-line no-unused-vars
 let isExist = false;
 
-class SignIn extends React.Component {
+class LogIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -217,8 +217,8 @@ class SignIn extends React.Component {
   }
 }
 
-SignIn.propTypes = {
+LogIn.propTypes = {
   classes: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(LogIn);
