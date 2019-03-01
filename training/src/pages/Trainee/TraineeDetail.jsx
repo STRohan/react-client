@@ -46,11 +46,7 @@ const styles = theme => ({
 class TraineeDetail extends React.Component {
 dataFinder = () => {
   const { match: { params: { id } } } = this.props;
-  let result;
-  const traineeDetails = trainee;
-  traineeDetails.forEach((element) => {
-    if (element.id === id) { result = element; }
-  });
+  const result = trainee.find(item => item.id === id);
   return result;
 }
 
@@ -58,13 +54,11 @@ getDateFormatted = date => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a')
 
 render() {
   const { classes } = this.props;
-
   const result = this.dataFinder();
   if (!result) return <NoMatch />;
   const date = this.getDateFormatted(result.createdAt);
   return (
     <>
-
       <Card className={classes.card}>
         <CardMedia
           className={classes.cover}

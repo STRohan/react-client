@@ -3,6 +3,8 @@ import Button from '@material-ui/core/Button';
 // import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import AddDialog from './components/AddDialog/AddDialog';
+import trainee from './data/trainee';
+
 
 class Trainee extends React.Component {
   state = {
@@ -10,6 +12,8 @@ class Trainee extends React.Component {
   };
 
   render() {
+    console.log('Props:', this.props);
+
     const { open } = this.state;
     return (
       <>
@@ -30,21 +34,12 @@ class Trainee extends React.Component {
         )}
         <div>
           <ul>
-            <li>
-              <Link to="/trainee/5c6c47af7740654f0915fac9">Sachin Tendulkar</Link>
-            </li>
-            <li>
-              <Link to="/trainee/5c6c47af7740654f0455fac9">Virat Kohli</Link>
-            </li>
-            <li>
-              <Link to="/trainee/5c6567af7740654f0915fac9">M.S. Dhoni</Link>
-            </li>
-            <li>
-              <Link to="/trainee/5c6c47af7747854f0915fac9">Rohit Sharma</Link>
-            </li>
-            <li>
-              <Link to="/trainee/5c6c47af7740654f0915876c9">Bumrah</Link>
-            </li>
+            {trainee.map(item => (
+              <li>
+                <Link to={`/trainee/${item.id}`}>{item.name}</Link>
+              </li>
+            ))
+            }
           </ul>
         </div>
 
