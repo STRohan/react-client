@@ -10,7 +10,7 @@ const AuthLayout = ({ children }) => (
 );
 
 AuthLayout.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.shape().isRequired,
 };
 
 export default AuthLayout;

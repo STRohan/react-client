@@ -10,6 +10,6 @@ const PrivateLayout = ({ children }) => (
 );
 
 PrivateLayout.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.shape().isRequired,
 };
 export default PrivateLayout;
