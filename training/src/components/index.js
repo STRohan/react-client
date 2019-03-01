@@ -5,3 +5,4 @@ export { default as Math } from './Math';
 export { default as RadioGroup } from './RadioGroup';
 export { default as SelectField } from './SelectField';
 export { default as Slider } from './Slider';
+export { default as GenericTable } from './Table';

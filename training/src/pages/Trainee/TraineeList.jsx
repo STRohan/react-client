@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import AddDialog from './components/AddDialog/AddDialog';
 import trainee from './data/trainee';
+import GenericTable from '../../components/Table';
 
 
 class Trainee extends React.Component {
@@ -12,12 +13,24 @@ class Trainee extends React.Component {
   };
 
   render() {
-    console.log('Props:', this.props);
-
     const { open } = this.state;
     return (
       <>
-
+        <GenericTable
+          id="id"
+          data={trainee}
+          coloumns={[
+            {
+              field: 'name',
+              label: 'Name',
+              align: 'center',
+            },
+            {
+              field: 'email',
+              label: 'Email Address',
+            },
+          ]}
+        />
         <Button style={{ margin: 10 }} variant="outlined" color="primary" onClick={this.handleClickOpen}>
       Add Trainee
         </Button>
