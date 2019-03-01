@@ -1,5 +1,5 @@
 import
-{ BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+{ BrowserRouter as Router, Switch } from 'react-router-dom';
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core';
 import theme from './theme';
@@ -13,7 +13,7 @@ const App = () => (
     <MuiThemeProvider theme={theme}>
       <Router>
         <Switch>
-          <PrivateRoute exact path="/trainee" component={Trainee} />
+          <PrivateRoute path="/trainee" component={Trainee} />
           <PrivateRoute exact path="/textFieldDemo" component={TextFieldDemo} />
           <PrivateRoute exact path="/inputDemo" component={InputFileDemo} />
           <PrivateRoute exact path="/childrenDemo" component={ChildrenDemo} />
