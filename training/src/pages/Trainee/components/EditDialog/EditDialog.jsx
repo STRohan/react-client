@@ -124,7 +124,7 @@ class EditDialog extends React.Component {
         <Dialog
           open={open}
           onClose={onClose}
-          fullWidth={[true]}
+          fullWidth
           maxWidth="md"
           aria-labelledby="alert-dialog-title"
         >
@@ -139,7 +139,7 @@ class EditDialog extends React.Component {
               required
               id="outlined-name"
               label="Name"
-              fullWidth={[true]}
+              fullWidth
               maxWidth="md"
               error={err.name}
               value={name}
@@ -165,7 +165,7 @@ class EditDialog extends React.Component {
               id="outlined-email"
               label="Email Address"
               value={email}
-              fullWidth={[true]}
+              fullWidth
               maxWidth="md"
               error={err.email}
               onChange={this.handleChange('email')}

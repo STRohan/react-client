@@ -23,7 +23,7 @@ class RemoveDialog extends React.Component {
       <div>
         <Dialog
           open={open}
-          fullWidth={[true]}
+          fullWidth
           maxWidth="md"
           aria-labelledby="remove-dialog-title"
         >

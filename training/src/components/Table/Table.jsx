@@ -65,38 +65,37 @@ class GenericTable extends React.Component {
           </TableHead>
           <TableBody>
             {data.map(item => (
-              <>
-                <TableRow key={item.id} className={classes.row}>
-                  {coloumns.map((coloum) => {
-                    const { align, field, format } = coloum;
-                    return (
-                      <TableCell key={`${item.id}.${field}`} onClick={onSelect(item.id)} align={align}>
-                        {(!format) ? item[field] : format(item[field])}
-                      </TableCell>
-                    );
-                  })}
-                  <TableCell>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                      {
-                        actions.map((action) => {
-                          const { icon, handler } = action;
-                          return (
-                            <IconButton onClick={() => handler(item)}>
-                              {icon}
-                            </IconButton>
-                          );
-                        })}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </>
+              <TableRow key={item.id} className={classes.row}>
+                {coloumns.map((coloum) => {
+                  const { align, field, format } = coloum;
+                  return (
+                    <TableCell key={`${item.id}.${field}`} onClick={onSelect(item.id)} align={align}>
+                      {(!format) ? item[field] : format(item[field])}
+                    </TableCell>
+                  );
+                })}
+                <TableCell>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {
+                      actions.map((action, index) => {
+                        const { icon, handler } = action;
+                        return (
+                        // eslint-disable-next-line react/no-array-index-key
+                          <IconButton key={`${item.id}${index}`} onClick={() => handler(item)}>
+                            {icon}
+                          </IconButton>
+                        );
+                      })}
+                  </div>
+                </TableCell>
+              </TableRow>
             ))}
           </TableBody>
           <TableFooter>
             <TableRow>
               <TablePagination
                 count={count}
-                rowsPerPageOptions
+                rowsPerPageOptions={[]}
                 rowsPerPage={10}
                 page={page}
                 onChangePage={onChangePage}
