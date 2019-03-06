@@ -7,6 +7,7 @@ import { PrivateLayout } from '../layouts/index';
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
+
     render={matchProps => (
       <PrivateLayout>
         <Component {...matchProps} />
@@ -16,6 +17,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 );
 
 PrivateRoute.propTypes = {
-  component: PropTypes.shape().isRequired,
+  component: PropTypes.func.isRequired,
 };
 export default PrivateRoute;

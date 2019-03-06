@@ -9,7 +9,10 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import * as moment from 'moment';
+import TableFooter from '@material-ui/core/TableFooter';
+import IconButton from '@material-ui/core/IconButton';
 
+import TablePagination from '@material-ui/core/TablePagination';
 
 const styles = theme => ({
   root: {
@@ -33,29 +36,21 @@ const styles = theme => ({
 
 class GenericTable extends React.Component {
   state = {
-
-  };
+  }
 
   getDateFormatted = date => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a')
 
-
-
-
-
-
   render() {
     const {
-      classes, coloumns, data, orderBy, order, onSort, onSelect,
+      classes, coloumns, data, orderBy, order, onSort, count, actions, onSelect, onChangePage, page,
     } = this.props;
-    console.log(':::',order,orderBy);
-
     return (
       <Paper className={classes.root}>
         <Table className={classes.table}>
           <TableHead>
-            <TableRow>
+            <TableRow key="abc">
               {coloumns.map(item => (
-                <TableCell align={item.align}>
+                <TableCell key={item.field} align={item.align}>
                   {
                     <TableSortLabel
                       active={orderBy === item.field}
@@ -64,27 +59,49 @@ class GenericTable extends React.Component {
                     >
                       {item.label}
                     </TableSortLabel>}
-
                 </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map(item => (
-              <>
-                <TableRow key={item.id} className={classes.row} onClick={onSelect(item.id)}>
-                  {coloumns.map((coloum) => {
-                    const { align, field, format } = coloum;
-                    return (
-                      <TableCell align={align}>
-                        {(!format) ? item[field] : format(item[field])}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              </>
+              <TableRow key={item.id} className={classes.row}>
+                {coloumns.map((coloum) => {
+                  const { align, field, format } = coloum;
+                  return (
+                    <TableCell key={`${item.id}.${field}`} onClick={onSelect(item.id)} align={align}>
+                      {(!format) ? item[field] : format(item[field])}
+                    </TableCell>
+                  );
+                })}
+                <TableCell>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {
+                      actions.map((action, index) => {
+                        const { icon, handler } = action;
+                        return (
+                        // eslint-disable-next-line react/no-array-index-key
+                          <IconButton key={`${item.id}${index}`} onClick={() => handler(item)}>
+                            {icon}
+                          </IconButton>
+                        );
+                      })}
+                  </div>
+                </TableCell>
+              </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                count={count}
+                rowsPerPageOptions={[]}
+                rowsPerPage={10}
+                page={page}
+                onChangePage={onChangePage}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </Paper>
     );
@@ -92,18 +109,23 @@ class GenericTable extends React.Component {
 }
 GenericTable.propTypes = {
   classes: PropTypes.shape().isRequired,
-  data: PropTypes.shape().isRequired,
-  coloumns: PropTypes.shape().isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  coloumns: PropTypes.arrayOf(PropTypes.object).isRequired,
   orderBy: PropTypes.string,
   order: PropTypes.string,
   onSort: PropTypes.func,
+  page: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
+  onChangePage: PropTypes.func,
   onSelect: PropTypes.func,
+  actions: PropTypes.arrayOf(PropTypes.object).isRequired,
 
 };
 
 GenericTable.defaultProps = {
   orderBy: '',
   order: 'asc',
+  onChangePage: () => {},
   onSort: () => {},
   onSelect: () => {},
 };

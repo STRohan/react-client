@@ -9,8 +9,11 @@ import {
 import { PrivateRoute, AuthRoute } from './routes';
 
 const App = () => (
+
   <>
     <MuiThemeProvider theme={theme}>
+
+
       <Router>
         <Switch>
           <PrivateRoute path="/trainee" component={Trainee} />

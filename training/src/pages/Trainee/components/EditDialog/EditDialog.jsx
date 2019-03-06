@@ -9,20 +9,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Person, Email } from '@material-ui/icons';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import IconButton from '@material-ui/core/IconButton';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
   name: yup.string().required().label('Name').min(3),
   email: yup.string().email().required().label('Email'),
-  password: yup.string()
-    .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/, 'Must contain one Upper-Case, one Lower-Case , one digit and atleast 8 characters')
-    .required('Password is required'),
-  confirmPassword: yup.string()
-    .oneOf([yup.ref('password'), null], 'Passwords must match')
-    .required('Password confirm is required'),
 });
 
 const styles = {
@@ -31,51 +22,41 @@ const styles = {
     flexWrap: 'wrap',
   },
   textField: {
-    margin: '0px 6px',
+    margin: '0px 12px',
     width: '95%',
-
   },
-  passwordStyle: {
-    display: 'flex',
-    width: '95%',
-    margin: '0px 6px',
+  button: {
+    margin: '0px 16px',
   },
 };
 // eslint-disable-next-line no-unused-vars
 let isExist = false;
-class AddDialog extends React.Component {
+class EditDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
       email: '',
       err: {},
-      confirmPassword: '',
-      password: '',
-      showPassword: false,
-      showPassword2: false,
-      isTouch: {
-        name: false,
-        email: false,
-        password: false,
-        confirmPassword: false,
-
-      },
       hasError: {
         name: false,
         email: false,
-        password: false,
-        confirmPassword: false,
       },
     };
   }
 
+  componentDidMount() {
+    const { data: { name, email } } = this.props;
+    this.setState({
+      name,
+      email,
+    });
+  }
+
   handleChange = field => (event) => {
-    const { isTouch } = this.state;
     this.setState({
       [field]: event.target.value,
       err: {},
-      isTouch: { ...isTouch, [field]: true },
     });
   };
 
@@ -87,14 +68,12 @@ class AddDialog extends React.Component {
     const {
       name,
       email,
-      password,
-      confirmPassword,
       hasError,
       err,
     } = this.state;
     const allErrors = { ...err };
     schema.validate({
-      name, email, password, confirmPassword,
+      name, email,
     }, { abortEarly: false })
       .then(() => {
         allErrors[field] = '';
@@ -112,53 +91,47 @@ class AddDialog extends React.Component {
       });
   }
 
-  handleClickShowPassword = () => {
-    this.setState(state => ({ showPassword: !state.showPassword }));
-  };
-
-  handleClickShowConfirmPassword = () => {
-    this.setState(state => ({ showPassword2: !state.showPassword2 }));
-  };
-
   handleErr = () => <div>eror</div>
 
   submitHandler=() => {
-    const { name, email, password } = this.state;
+    const { name, email } = this.state;
     const { dataDisplay } = this.props;
-    const data = { name, email, password };
+    const data = { name, email };
     return dataDisplay(data);
   }
 
   hasError = () => {
-    const { hasError, isTouch } = this.state;
+    const { hasError, name, email } = this.state;
+    const { data } = this.props;
     let check = 0;
-    let touchCheck = 0;
+    let change = false;
     Object.keys(hasError).forEach((element) => {
       if (!hasError[element]) check += 1;
     });
-    Object.keys(isTouch).forEach((element) => {
-      if (isTouch[element]) touchCheck += 1;
-    });
-    return !(check === 4 && touchCheck === 4);
+    if (name === data.name && email === data.email) change = true;
+
+    return !(check === 2 && !change);
   }
 
   render() {
     const {
-      name, email, err, confirmPassword, password, showPassword, showPassword2,
+      name, email, err,
     } = this.state;
     const sub = this.hasError();
-    const { open, onClose, classes } = this.props;
+    const { open, onClose } = this.props;
     return (
       <div>
         <Dialog
           open={open}
           onClose={onClose}
+          fullWidth
+          maxWidth="md"
           aria-labelledby="alert-dialog-title"
         >
-          <DialogTitle id="alert-dialog-title" color="primary">Add Trainee</DialogTitle>
+          <DialogTitle id="alert-dialog-title" color="primary">Edit Trainee</DialogTitle>
           <DialogContent fullWidth>
             <DialogContentText>
-              Add Your Trainee Details
+              Enter Your Trainee Details
             </DialogContentText>
           </DialogContent>
           <div style={styles.textField}>
@@ -166,9 +139,10 @@ class AddDialog extends React.Component {
               required
               id="outlined-name"
               label="Name"
+              fullWidth
+              maxWidth="md"
               error={err.name}
               value={name}
-              fullWidth
               helperText={this.handleErr}
               onChange={this.handleChange('name')}
               onBlur={this.onBlurHandler('name')}
@@ -192,6 +166,7 @@ class AddDialog extends React.Component {
               label="Email Address"
               value={email}
               fullWidth
+              maxWidth="md"
               error={err.email}
               onChange={this.handleChange('email')}
               onBlur={this.onBlurHandler('email')}
@@ -207,56 +182,7 @@ class AddDialog extends React.Component {
               }}
             />
           </div>
-          <div style={styles.passwordStyle}>
-            <TextField
-              id="outlined-adornment-password"
-              className={classes.password}
-              variant="outlined"
-              type={showPassword ? 'text' : 'password'}
-              label="Password"
-              value={password}
-              error={err.password}
-              onChange={this.handleChange('password')}
-              onBlur={this.onBlurHandler('password')}
-              helperText={(err.password) ? err.password : ''}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      onClick={this.handleClickShowPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              id="outlined-adornment- confirm-password"
-              variant="outlined"
-              type={showPassword2 ? 'text' : 'password'}
-              label="Confirm Password"
-              value={confirmPassword}
-              error={err.confirmPassword}
-              onChange={this.handleChange('confirmPassword')}
-              onBlur={this.onBlurHandler('confirmPassword')}
-              helperText={(err.confirmPassword) ? err.confirmPassword : ''}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle confirm-password visibility"
-                      onClick={this.handleClickShowConfirmPassword}
-                    >
-                      {showPassword2 ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-          <DialogActions>
+          <DialogActions style={styles.button}>
             <Button onClick={onClose} color="primary">
               Cancle
             </Button>
@@ -270,17 +196,16 @@ class AddDialog extends React.Component {
   }
 }
 
-export default AddDialog;
+export default EditDialog;
 
-AddDialog.propTypes = {
+EditDialog.propTypes = {
   open: PropTypes.bool,
   onClose: PropTypes.func,
+  data: PropTypes.shape().isRequired,
   dataDisplay: PropTypes.func,
-  classes: PropTypes.func,
 };
-AddDialog.defaultProps = {
+EditDialog.defaultProps = {
   open: false,
   onClose: () => {},
   dataDisplay: () => {},
-  classes: () => {},
 };

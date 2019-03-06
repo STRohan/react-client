@@ -69,7 +69,7 @@ class Navbar extends React.Component {
 }
 
 Navbar.propTypes = {
-  classes: PropTypes.PropTypes.objectOf(PropTypes.object),
+  classes: PropTypes.shape(),
 };
 
 Navbar.defaultProps = {
