@@ -3,16 +3,21 @@ import Button from '@material-ui/core/Button';
 // import { Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import * as moment from 'moment';
-import AddDialog from './components/AddDialog/AddDialog';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import { AddDialog, EditDialog, RemoveDialog } from './components/index';
 import trainee from './data/trainee';
 import GenericTable from '../../components/Table';
-
 
 class Trainee extends React.Component {
   state = {
     orderBy: 'field',
     order: 'asc',
     open: false,
+    openEditor: false,
+    openDelete: false,
+    page: 0,
+    data: {},
   };
 
 
@@ -33,8 +38,53 @@ class Trainee extends React.Component {
 
   getFormatData = date => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a')
 
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = field => () => {
+    this.setState({ [field]: false });
+  };
+
+
+  displayHandler= (data) => {
+    console.log('Data::::', data);
+    this.setState({ open: false });
+  }
+
+  displayEditHandler= (data) => {
+    console.log('Data Edited::::', data);
+    this.setState({ openEditor: false });
+  }
+
+  displayDeleteHandler= (data) => {
+    console.log('Data Deleted::::', data);
+    this.setState({ openDelete: false });
+  }
+
+
+  handleEditDialogOpen= (item) => {
+    this.setState({ openEditor: true, data: item });
+  }
+
+  handleDeleteDialogOpen= (item) => {
+    this.setState({ openDelete: true, data: item });
+  }
+
+  handleChangePage = (event, page) => {
+    this.setState({ page });
+  };
+
   render() {
-    const { open, order, orderBy } = this.state;
+    const {
+      open,
+      order,
+      orderBy,
+      page,
+      openDelete,
+      openEditor,
+      data,
+    } = this.state;
     return (
       <>
         <div style={{
@@ -45,7 +95,7 @@ class Trainee extends React.Component {
       Add Trainee
           </Button>
           {(!open) ? '' : (
-            <AddDialog open={open} onClose={this.handleClose} dataDisplay={this.displayHandler}>
+            <AddDialog open={open} onClose={this.handleClose('open')} dataDisplay={this.displayHandler}>
               {(name, email, password) => (
                 <div>
                   {' '}
@@ -56,6 +106,12 @@ class Trainee extends React.Component {
             </AddDialog>
           )}
         </div>
+        {(!openEditor) ? '' : (
+          <EditDialog open={openEditor} data={data} onClose={this.handleClose('openEditor')} dataDisplay={this.displayEditHandler} />
+        )}
+        {(!openDelete) ? '' : (
+          <RemoveDialog open={openDelete} data={data} onClose={this.handleClose('openDelete')} dataDisplay={this.displayDeleteHandler} />
+        )}
         <GenericTable
           id="id"
           data={trainee}
@@ -77,11 +133,23 @@ class Trainee extends React.Component {
               format: this.getFormatData,
             },
           ]}
+          actions={[
+            {
+              icon: <EditIcon />,
+              handler: this.handleEditDialogOpen,
+            },
+            {
+              icon: <DeleteIcon />,
+              handler: this.handleDeleteDialogOpen,
+            },
+          ]}
           orderBy={orderBy}
           order={order}
           onSort={this.sortRequestHandler}
           onSelect={this.selectHandler}
-
+          count={100}
+          page={page}
+          onChangePage={this.handleChangePage}
         />
       </>
     );
