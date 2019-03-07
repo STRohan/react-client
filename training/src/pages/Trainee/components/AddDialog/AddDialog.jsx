@@ -13,6 +13,8 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
 import * as yup from 'yup';
+import { SnackBarConsumer } from '../../../../contexts/index';
+
 
 const schema = yup.object().shape({
   name: yup.string().required().label('Name').min(3),
@@ -122,11 +124,11 @@ class AddDialog extends React.Component {
 
   handleErr = () => <div>eror</div>
 
-  submitHandler=() => {
+  submitHandler=(openSnackBar) => {
     const { name, email, password } = this.state;
     const { dataDisplay } = this.props;
     const data = { name, email, password };
-    return dataDisplay(data);
+    return dataDisplay(data, openSnackBar);
   }
 
   hasError = () => {
@@ -149,6 +151,8 @@ class AddDialog extends React.Component {
     const sub = this.hasError();
     const { open, onClose, classes } = this.props;
     return (
+      <SnackBarConsumer>
+      {openSnackBar => (
       <div>
         <Dialog
           open={open}
@@ -260,12 +264,14 @@ class AddDialog extends React.Component {
             <Button onClick={onClose} color="primary">
               Cancle
             </Button>
-            <Button onClick={this.submitHandler} disabled={sub} color="primary" autoFocus>
+            <Button onClick={this.submitHandler(openSnackBar)} disabled={sub} color="primary" autoFocus>
               Submit
             </Button>
           </DialogActions>
         </Dialog>
       </div>
+      )}
+      </SnackBarConsumer>
     );
   }
 }

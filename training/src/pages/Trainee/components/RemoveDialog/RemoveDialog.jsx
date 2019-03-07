@@ -6,43 +6,48 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { SnackBarConsumer } from '../../../../contexts/index';
 
 class RemoveDialog extends React.Component {
   state = {
   };
 
-  submitHandler=() => {
+  submitHandler=(openSnackBar) => {
     const { dataDisplay, data } = this.props;
     const { img, ...rest } = data;
-    return dataDisplay(rest);
+    return dataDisplay(rest, openSnackBar);
   }
 
   render() {
     const { open, onClose } = this.props;
     return (
-      <div>
-        <Dialog
-          open={open}
-          fullWidth
-          maxWidth="md"
-          aria-labelledby="remove-dialog-title"
-        >
-          <DialogTitle id="remove-dialog-title">Delete</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
+      <SnackBarConsumer>
+        { openSnackBar => (
+          <div>
+            <Dialog
+              open={open}
+              fullWidth
+              maxWidth="md"
+              aria-labelledby="remove-dialog-title"
+            >
+              <DialogTitle id="remove-dialog-title">Delete</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
               Do you really want to delete the entry?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onClose} color="primary">
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={onClose} color="primary">
               Cancel
-            </Button>
-            <Button onClick={this.submitHandler} color="primary">
+                </Button>
+                <Button onClick={() => this.submitHandler(openSnackBar)} color="primary">
               Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        )}
+      </SnackBarConsumer>
     );
   }
 }

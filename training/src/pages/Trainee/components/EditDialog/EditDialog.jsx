@@ -10,6 +10,8 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Person, Email } from '@material-ui/icons';
 import * as yup from 'yup';
+import { SnackBarConsumer } from '../../../../contexts/index';
+
 
 const schema = yup.object().shape({
   name: yup.string().required().label('Name').min(3),
@@ -93,11 +95,11 @@ class EditDialog extends React.Component {
 
   handleErr = () => <div>eror</div>
 
-  submitHandler=() => {
+  submitHandler=(openSnackBar) => {
     const { name, email } = this.state;
     const { dataDisplay } = this.props;
     const data = { name, email };
-    return dataDisplay(data);
+    return dataDisplay(data, openSnackBar);
   }
 
   hasError = () => {
@@ -120,78 +122,82 @@ class EditDialog extends React.Component {
     const sub = this.hasError();
     const { open, onClose } = this.props;
     return (
-      <div>
-        <Dialog
-          open={open}
-          onClose={onClose}
-          fullWidth
-          maxWidth="md"
-          aria-labelledby="alert-dialog-title"
-        >
-          <DialogTitle id="alert-dialog-title" color="primary">Edit Trainee</DialogTitle>
-          <DialogContent fullWidth>
-            <DialogContentText>
-              Enter Your Trainee Details
-            </DialogContentText>
-          </DialogContent>
-          <div style={styles.textField}>
-            <TextField
-              required
-              id="outlined-name"
-              label="Name"
+      <SnackBarConsumer>
+        {openSnackBar => (
+          <div>
+            <Dialog
+              open={open}
+              onClose={onClose}
               fullWidth
               maxWidth="md"
-              error={err.name}
-              value={name}
-              helperText={this.handleErr}
-              onChange={this.handleChange('name')}
-              onBlur={this.onBlurHandler('name')}
-              margin="dense"
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Person />
-                  </InputAdornment>
-                ),
-              }}
-              // eslint-disable-next-line react/jsx-no-duplicate-props
-              helperText={(err.name) ? err.name : ''}
-            />
+              aria-labelledby="alert-dialog-title"
+            >
+              <DialogTitle id="alert-dialog-title" color="primary">Edit Trainee</DialogTitle>
+              <DialogContent fullWidth>
+                <DialogContentText>
+                  Enter Your Trainee Details
+                </DialogContentText>
+              </DialogContent>
+              <div style={styles.textField}>
+                <TextField
+                  required
+                  id="outlined-name"
+                  label="Name"
+                  fullWidth
+                  maxWidth="md"
+                  error={err.name}
+                  value={name}
+                  helperText={this.handleErr}
+                  onChange={this.handleChange('name')}
+                  onBlur={this.onBlurHandler('name')}
+                  margin="dense"
+                  variant="outlined"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Person />
+                      </InputAdornment>
+                    ),
+                  }}
+                  // eslint-disable-next-line react/jsx-no-duplicate-props
+                  helperText={(err.name) ? err.name : ''}
+                />
+              </div>
+              <div style={styles.textField}>
+                <TextField
+                  required
+                  id="outlined-email"
+                  label="Email Address"
+                  value={email}
+                  fullWidth
+                  maxWidth="md"
+                  error={err.email}
+                  onChange={this.handleChange('email')}
+                  onBlur={this.onBlurHandler('email')}
+                  margin="normal"
+                  variant="outlined"
+                  helperText={(err.email) ? err.email : ''}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Email />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+              <DialogActions style={styles.button}>
+                <Button onClick={onClose} color="primary">
+                  Cancel
+                </Button>
+                <Button disabled={sub} onClick={() => this.submitHandler(openSnackBar)} color="primary" autoFocus>
+                  Submit
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
-          <div style={styles.textField}>
-            <TextField
-              required
-              id="outlined-email"
-              label="Email Address"
-              value={email}
-              fullWidth
-              maxWidth="md"
-              error={err.email}
-              onChange={this.handleChange('email')}
-              onBlur={this.onBlurHandler('email')}
-              margin="normal"
-              variant="outlined"
-              helperText={(err.email) ? err.email : ''}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Email />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-          <DialogActions style={styles.button}>
-            <Button onClick={onClose} color="primary">
-              Cancle
-            </Button>
-            <Button onClick={this.submitHandler} disabled={sub} color="primary" autoFocus>
-              Submit
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+        )}
+      </SnackBarConsumer>
     );
   }
 }
