@@ -52,14 +52,19 @@ class Trainee extends React.Component {
     this.setState({ open: false });
   }
 
-  displayEditHandler= (data) => {
+  displayEditHandler= (data, openSnackBar) => {
     console.log('Data Edited::::', data);
-    this.setState({ openEditor: false });
+    this.setState({ openEditor: false }, () => openSnackBar('Trainee added successfully', 'success'));
   }
 
-  displayDeleteHandler= (data) => {
+  displayDeleteHandler= (data, openSnackBar) => {
+    const { createdAt } = data;
+    const valid = moment(createdAt).isBefore('2019-02-14T18:15:11.778Z');
+    const status = (valid) ? 'error' : 'success';
+    const message = (valid) ? 'Sorry the trainee can not be deleted' : 'Trainee deleted successfully';
     console.log('Data Deleted::::', data);
-    this.setState({ openDelete: false });
+
+    this.setState({ openDelete: false }, () => openSnackBar(message, status));
   }
 
 

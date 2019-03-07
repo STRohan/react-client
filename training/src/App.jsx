@@ -7,24 +7,25 @@ import {
   InputFileDemo, TextFieldDemo, ChildrenDemo, Trainee, LogIn, NoMatch,
 } from './pages/index';
 import { PrivateRoute, AuthRoute } from './routes';
+import { SnackBarProvider } from './contexts';
 
 const App = () => (
 
   <>
-    <MuiThemeProvider theme={theme}>
-
-
-      <Router>
-        <Switch>
-          <PrivateRoute path="/trainee" component={Trainee} />
-          <PrivateRoute exact path="/textFieldDemo" component={TextFieldDemo} />
-          <PrivateRoute exact path="/inputDemo" component={InputFileDemo} />
-          <PrivateRoute exact path="/childrenDemo" component={ChildrenDemo} />
-          <AuthRoute exact path="/login" component={LogIn} />
-          <PrivateRoute component={NoMatch} />
-        </Switch>
-      </Router>
-    </MuiThemeProvider>
+    <SnackBarProvider>
+      <MuiThemeProvider theme={theme}>
+        <Router>
+          <Switch>
+            <PrivateRoute path="/trainee" component={Trainee} />
+            <PrivateRoute exact path="/textFieldDemo" component={TextFieldDemo} />
+            <PrivateRoute exact path="/inputDemo" component={InputFileDemo} />
+            <PrivateRoute exact path="/childrenDemo" component={ChildrenDemo} />
+            <AuthRoute exact path="/login" component={LogIn} />
+            <PrivateRoute component={NoMatch} />
+          </Switch>
+        </Router>
+      </MuiThemeProvider>
+    </SnackBarProvider>
   </>
 
 );
