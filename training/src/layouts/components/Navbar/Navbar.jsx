@@ -35,6 +35,10 @@ class Navbar extends React.Component {
     this.state = {};
   }
 
+  logoutHandler=() => {
+    localStorage.removeItem('jwtToken');
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -58,7 +62,7 @@ class Navbar extends React.Component {
             </Button>
             <Typography color="inherit" className={classes.logout}>
               <Button size="small" color="inherit">
-                Logout
+                <Link style={styles.link} onClick={this.logoutHandler} to="/login">Logout</Link>
               </Button>
             </Typography>
           </Toolbar>
