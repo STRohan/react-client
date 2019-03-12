@@ -237,7 +237,7 @@ class AddDialog extends React.Component {
               </div>
               <DialogActions>
                 <Button onClick={onClose} color="primary">
-              Cancle
+              Cancel
                 </Button>
                 <Button onClick={event => this.submitHandler(event, openSnackBar)} disabled={sub} color="primary" autoFocus>
               Submit

@@ -1,4 +1,3 @@
-/* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PropTypes from 'prop-types';
@@ -6,9 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = {
-  container: {
-    position: 'relative',
-  },
   circularProgress: {
     position: 'absolute',
     top: 250,

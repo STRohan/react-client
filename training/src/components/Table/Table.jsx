@@ -21,6 +21,14 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
   },
+  circularProgress: {
+    position: 'absolute',
+    top: 250,
+    left: '50%',
+  },
+  message: {
+    textAlign: 'center',
+  },
   row: {
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.grey[200],
@@ -129,4 +137,4 @@ GenericTable.defaultProps = {
   onSort: () => {},
   onSelect: () => {},
 };
-export default withStyles(styles)(withLoaderAndMessage(GenericTable));
+export default withLoaderAndMessage(withStyles(styles)(GenericTable));
