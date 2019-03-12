@@ -13,8 +13,9 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
 import * as yup from 'yup';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { SnackBarConsumer } from '../../../../contexts/index';
-
+import { callApi } from '../../../../lib/utils/api';
 
 const schema = yup.object().shape({
   name: yup.string().required().label('Name').min(3),
@@ -52,6 +53,8 @@ class AddDialog extends React.Component {
       name: '',
       email: '',
       err: {},
+      spinner: false,
+      sub: false,
       confirmPassword: '',
       password: '',
       showPassword: false,
@@ -112,6 +115,7 @@ class AddDialog extends React.Component {
         });
         this.setState({ err: allErrors, hasError });
       });
+    this.hasError();
   }
 
   handleClickShowPassword = () => {
@@ -124,9 +128,23 @@ class AddDialog extends React.Component {
 
   handleErr = () => <div>eror</div>
 
-  submitHandler=(openSnackBar) => {
-    const { name, email, password } = this.state;
+  submitHandler= async (event, openSnackBar) => {
     const { dataDisplay } = this.props;
+    const { name, email, password } = this.state;
+    this.setState({ spinner: true, sub: false });
+    event.preventDefault();
+    const url = '/api/trainee';
+    const method = 'post';
+    const headers = { Authorization: localStorage.getItem('jwtToken') };
+    const res = await callApi(url, method, { name, email, password }, headers);
+
+    if (res.status === 'ok') {
+      this.setState({ spinner: false, sub: true },
+        () => openSnackBar(res.message, 'success'));
+    } else {
+      this.setState({ spinner: false, sub: true },
+        () => openSnackBar(res.message, 'error'));
+    }
     const data = { name, email, password };
     return dataDisplay(data, openSnackBar);
   }
@@ -141,136 +159,100 @@ class AddDialog extends React.Component {
     Object.keys(isTouch).forEach((element) => {
       if (isTouch[element]) touchCheck += 1;
     });
-    return !(check === 4 && touchCheck === 4);
+    return this.setState({ sub: (!(check === 4 && touchCheck === 4)) });
   }
+
+  fieldEntry = (field, entry, lable, icon, show) => {
+    const { err } = this.state;
+    return (
+      <TextField
+        required
+        label={lable}
+        error={err[field]}
+        value={entry}
+        fullWidth
+        type={show}
+        helperText={this.handleErr}
+        onChange={this.handleChange(field)}
+        onBlur={this.onBlurHandler(field)}
+        margin="dense"
+        variant="outlined"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              { icon }
+            </InputAdornment>
+          ),
+        }}
+        // eslint-disable-next-line react/jsx-no-duplicate-props
+        helperText={(err[field]) ? err[field] : ''}
+      />
+    );
+  }
+
+  iconPasswaordHandler = (field, method) => (
+    <IconButton
+      aria-label="Toggle password visibility"
+      onClick={method}
+    >
+      {field ? <VisibilityOff /> : <Visibility />}
+    </IconButton>
+  )
 
   render() {
     const {
-      name, email, err, confirmPassword, password, showPassword, showPassword2,
+      name, email, sub, spinner, confirmPassword, password, showPassword, showPassword2,
     } = this.state;
-    const sub = this.hasError();
     const { open, onClose, classes } = this.props;
     return (
       <SnackBarConsumer>
-      {openSnackBar => (
-      <div>
-        <Dialog
-          open={open}
-          onClose={onClose}
-          aria-labelledby="alert-dialog-title"
-        >
-          <DialogTitle id="alert-dialog-title" color="primary">Add Trainee</DialogTitle>
-          <DialogContent fullWidth>
-            <DialogContentText>
+        {openSnackBar => (
+          <div>
+            <Dialog
+              open={open}
+              onClose={onClose}
+              maxWidth="md"
+              className={classes.container}
+              aria-labelledby="dialog-title"
+            >
+              <DialogTitle id="dialog-title" color="primary">Add Trainee</DialogTitle>
+              <DialogContent fullWidth>
+                <DialogContentText>
               Add Your Trainee Details
-            </DialogContentText>
-          </DialogContent>
-          <div style={styles.textField}>
-            <TextField
-              required
-              id="outlined-name"
-              label="Name"
-              error={err.name}
-              value={name}
-              fullWidth
-              helperText={this.handleErr}
-              onChange={this.handleChange('name')}
-              onBlur={this.onBlurHandler('name')}
-              margin="dense"
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Person />
-                  </InputAdornment>
-                ),
-              }}
-              // eslint-disable-next-line react/jsx-no-duplicate-props
-              helperText={(err.name) ? err.name : ''}
-            />
-          </div>
-          <div style={styles.textField}>
-            <TextField
-              required
-              id="outlined-email"
-              label="Email Address"
-              value={email}
-              fullWidth
-              error={err.email}
-              onChange={this.handleChange('email')}
-              onBlur={this.onBlurHandler('email')}
-              margin="normal"
-              variant="outlined"
-              helperText={(err.email) ? err.email : ''}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Email />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-          <div style={styles.passwordStyle}>
-            <TextField
-              id="outlined-adornment-password"
-              className={classes.password}
-              variant="outlined"
-              type={showPassword ? 'text' : 'password'}
-              label="Password"
-              value={password}
-              error={err.password}
-              onChange={this.handleChange('password')}
-              onBlur={this.onBlurHandler('password')}
-              helperText={(err.password) ? err.password : ''}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle password visibility"
-                      onClick={this.handleClickShowPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              id="outlined-adornment- confirm-password"
-              variant="outlined"
-              type={showPassword2 ? 'text' : 'password'}
-              label="Confirm Password"
-              value={confirmPassword}
-              error={err.confirmPassword}
-              onChange={this.handleChange('confirmPassword')}
-              onBlur={this.onBlurHandler('confirmPassword')}
-              helperText={(err.confirmPassword) ? err.confirmPassword : ''}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Toggle confirm-password visibility"
-                      onClick={this.handleClickShowConfirmPassword}
-                    >
-                      {showPassword2 ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-          <DialogActions>
-            <Button onClick={onClose} color="primary">
+                </DialogContentText>
+              </DialogContent>
+              <div style={styles.textField}>
+                {this.fieldEntry('name', name, 'Name', <Person />)}
+              </div>
+              <div style={styles.textField}>
+                {this.fieldEntry('email', email, 'Email', <Email />)}
+              </div>
+              <div style={styles.passwordStyle}>
+                <div>
+                  {this.fieldEntry('password', password, 'Password', this.iconPasswaordHandler(showPassword, this.handleClickShowPassword), showPassword ? 'text' : 'password')}
+                </div>
+                <div style={{ flex: '1 1 0%', paddingLeft: '34px' }}>
+                  {this.fieldEntry('confirmPassword', confirmPassword, 'Confirm Password', this.iconPasswaordHandler(showPassword2, this.handleClickShowConfirmPassword), showPassword2 ? 'text' : 'password')}
+                </div>
+              </div>
+              <DialogActions>
+                <Button onClick={onClose} color="primary">
               Cancle
-            </Button>
-            <Button onClick={this.submitHandler(openSnackBar)} disabled={sub} color="primary" autoFocus>
+                </Button>
+                <Button onClick={event => this.submitHandler(event, openSnackBar)} disabled={sub} color="primary" autoFocus>
               Submit
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-      )}
+                  {(spinner) ? (
+                    <CircularProgress
+                      style={{ position: 'absolute', bottom: 0 }}
+                      className={classes.progress}
+                      color="secondary"
+                    />
+                  ) : ''}
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        )}
       </SnackBarConsumer>
     );
   }
