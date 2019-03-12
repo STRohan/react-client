@@ -44,7 +44,7 @@ const styles = theme => ({
 
 
 class TraineeDetail extends React.Component {
-dataFinder = () => {
+dataFinder = async () => {
   const { match: { params: { id } } } = this.props;
   const result = trainee.find(item => item.id === id);
   return result;

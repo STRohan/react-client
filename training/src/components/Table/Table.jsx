@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -11,8 +12,8 @@ import Paper from '@material-ui/core/Paper';
 import * as moment from 'moment';
 import TableFooter from '@material-ui/core/TableFooter';
 import IconButton from '@material-ui/core/IconButton';
-
 import TablePagination from '@material-ui/core/TablePagination';
+import { withLoaderAndMessage } from '../HOC/index';
 
 const styles = theme => ({
   root: {
@@ -64,8 +65,8 @@ class GenericTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map(item => (
-              <TableRow key={item.id} className={classes.row}>
+            {data.map((item, index) => (
+              <TableRow key={`${item.id}.${index}`} className={classes.row}>
                 {coloumns.map((coloum) => {
                   const { align, field, format } = coloum;
                   return (
@@ -77,11 +78,10 @@ class GenericTable extends React.Component {
                 <TableCell>
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     {
-                      actions.map((action, index) => {
+                      actions.map((action, indexAction) => {
                         const { icon, handler } = action;
                         return (
-                        // eslint-disable-next-line react/no-array-index-key
-                          <IconButton key={`${item.id}${index}`} onClick={() => handler(item)}>
+                          <IconButton key={`${item.id}.${indexAction}`} onClick={() => handler(item)}>
                             {icon}
                           </IconButton>
                         );
@@ -129,4 +129,4 @@ GenericTable.defaultProps = {
   onSort: () => {},
   onSelect: () => {},
 };
-export default withStyles(styles)(GenericTable);
+export default withStyles(styles)(withLoaderAndMessage(GenericTable));

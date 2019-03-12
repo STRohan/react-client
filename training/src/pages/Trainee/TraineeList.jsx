@@ -1,21 +1,29 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-// import { Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import * as moment from 'moment';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { AddDialog, EditDialog, RemoveDialog } from './components/index';
-import trainee from './data/trainee';
 import GenericTable from '../../components/Table';
+import { callApi } from '../../lib/utils/api';
+
 
 class Trainee extends React.Component {
+  constructor(props) {
+    super(props);
+    this.recordFinder();
+  }
+
   state = {
     orderBy: 'field',
     order: 'asc',
     open: false,
+    spinner: true,
     openEditor: false,
     openDelete: false,
+    count: 0,
+    records: [],
     page: 0,
     data: {},
   };
@@ -46,6 +54,15 @@ class Trainee extends React.Component {
     this.setState({ [field]: false });
   };
 
+  recordFinder = async () => {
+    this.setState({ spinner: true });
+    const headers = { Authorization: localStorage.getItem('jwtToken') };
+    const { page } = this.state;
+    const params = { limit: 10, skip: page * 10 };
+    const res = await callApi('api/trainee', 'get', {}, headers, params);
+    this.setState({ count: res.data.count, records: res.data.records, spinner: false });
+    return res.data;
+  }
 
   displayHandler= (data) => {
     console.log('Data::::', data);
@@ -77,7 +94,7 @@ class Trainee extends React.Component {
   }
 
   handleChangePage = (event, page) => {
-    this.setState({ page });
+    this.setState({ page }, () => this.recordFinder());
   };
 
   render() {
@@ -86,6 +103,9 @@ class Trainee extends React.Component {
       order,
       orderBy,
       page,
+      count,
+      spinner,
+      records,
       openDelete,
       openEditor,
       data,
@@ -117,9 +137,10 @@ class Trainee extends React.Component {
         {(!openDelete) ? '' : (
           <RemoveDialog open={openDelete} data={data} onClose={this.handleClose('openDelete')} dataDisplay={this.displayDeleteHandler} />
         )}
+
         <GenericTable
           id="id"
-          data={trainee}
+          data={records}
           coloumns={[
             {
               field: 'name',
@@ -152,8 +173,9 @@ class Trainee extends React.Component {
           order={order}
           onSort={this.sortRequestHandler}
           onSelect={this.selectHandler}
-          count={100}
+          count={count}
           page={page}
+          loader={spinner}
           onChangePage={this.handleChangePage}
         />
       </>

@@ -16,7 +16,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import * as yup from 'yup';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { CallApi } from '../../lib/utils/api';
+import { callApi } from '../../lib/utils/api';
 import { SnackBarConsumer } from '../../contexts/SnackBarProvider';
 
 const styles = theme => ({
@@ -142,7 +142,7 @@ class LogIn extends React.Component {
     const method = 'post';
     const { email, password } = this.state;
     const { history } = this.props;
-    const res = await CallApi(url, method, { email, password });
+    const res = await callApi(url, method, { email, password });
     localStorage.setItem('jwtToken', res.data);
     if (res.status === 'ok') {
       this.setState({ spinner: false },
