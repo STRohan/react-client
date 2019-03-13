@@ -10,17 +10,14 @@ import { callApi } from '../../lib/utils/api';
 
 
 class Trainee extends React.Component {
-  constructor(props) {
-    super(props);
-    this.recordFinder();
-  }
-
   state = {
     orderBy: 'field',
     order: 'asc',
     open: false,
     spinner: true,
     openEditor: false,
+    editDisable: false,
+    deleteDisable: false,
     openDelete: false,
     count: 0,
     records: [],
@@ -28,6 +25,9 @@ class Trainee extends React.Component {
     data: {},
   };
 
+  componentDidMount() {
+    this.recordFinder(true);
+  }
 
   sortRequestHandler = (order, field) => () => {
     const { orderBy } = this.state;
@@ -60,28 +60,24 @@ class Trainee extends React.Component {
     const { page } = this.state;
     const params = { limit: 10, skip: page * 10 };
     const res = await callApi('api/trainee', 'get', {}, headers, params);
+    if (res.data && res.data.records.length === 0 && res.data.count >= 0) {
+      this.setState({ page: page - 1 }, () => this.recordFinder());
+      return null;
+    }
     this.setState({ count: res.data.count, records: res.data.records, spinner: false });
     return res.data;
   }
 
-  displayHandler= (data) => {
-    console.log('Data::::', data);
-    this.setState({ open: false });
+  displayHandler= () => {
+    this.setState({ open: false }, () => this.recordFinder());
   }
 
-  displayEditHandler= (data, openSnackBar) => {
-    console.log('Data Edited::::', data);
-    this.setState({ openEditor: false }, () => openSnackBar('Trainee added successfully', 'success'));
+  displayEditHandler= () => {
+    this.setState({ openEditor: false }, () => this.recordFinder());
   }
 
-  displayDeleteHandler= (data, openSnackBar) => {
-    const { createdAt } = data;
-    const valid = moment(createdAt).isBefore('2019-02-14T18:15:11.778Z');
-    const status = (valid) ? 'error' : 'success';
-    const message = (valid) ? 'Sorry the trainee can not be deleted' : 'Trainee deleted successfully';
-    console.log('Data Deleted::::', data);
-
-    this.setState({ openDelete: false }, () => openSnackBar(message, status));
+  displayDeleteHandler= () => {
+    this.setState({ openDelete: false }, () => this.recordFinder());
   }
 
 
@@ -91,9 +87,11 @@ class Trainee extends React.Component {
 
   handleDeleteDialogOpen= (item) => {
     this.setState({ openDelete: true, data: item });
+    this.recordFinder();
   }
 
   handleChangePage = (event, page) => {
+    console.log('::', page);
     this.setState({ page }, () => this.recordFinder());
   };
 
@@ -107,6 +105,8 @@ class Trainee extends React.Component {
       spinner,
       records,
       openDelete,
+      deleteDisable,
+      editDisable,
       openEditor,
       data,
     } = this.state;
@@ -161,11 +161,11 @@ class Trainee extends React.Component {
           ]}
           actions={[
             {
-              icon: <EditIcon />,
+              icon: <EditIcon disabled={editDisable} />,
               handler: this.handleEditDialogOpen,
             },
             {
-              icon: <DeleteIcon />,
+              icon: <DeleteIcon disabled={deleteDisable} />,
               handler: this.handleDeleteDialogOpen,
             },
           ]}

@@ -6,10 +6,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { Person, Email } from '@material-ui/icons';
 import * as yup from 'yup';
+import { callApi } from '../../../../lib/utils/api';
 import { SnackBarConsumer } from '../../../../contexts/index';
 
 
@@ -39,6 +41,8 @@ class EditDialog extends React.Component {
     this.state = {
       name: '',
       email: '',
+      sub: true,
+      spinner: false,
       err: {},
       hasError: {
         name: false,
@@ -91,15 +95,29 @@ class EditDialog extends React.Component {
         });
         this.setState({ err: allErrors, hasError });
       });
+    this.hasError();
   }
 
   handleErr = () => <div>eror</div>
 
-  submitHandler=(openSnackBar) => {
+  submitHandler= async (e, openSnackBar) => {
+    this.setState({ sub: true, spinner: true });
+    e.preventDefault();
     const { name, email } = this.state;
-    const { dataDisplay } = this.props;
-    const data = { name, email };
-    return dataDisplay(data, openSnackBar);
+    const { dataDisplay, data } = this.props;
+    const url = '/api/trainee';
+    const method = 'put';
+    const headers = { Authorization: localStorage.getItem('jwtToken') };
+    const res = await callApi(url, method, { id: data.originalId, name, email }, headers);
+
+    if (res.status === 'ok') {
+      this.setState({ spinner: false, sub: true },
+        () => openSnackBar(res.message, 'success'));
+    } else {
+      this.setState({ spinner: false, sub: true },
+        () => openSnackBar(res.message, 'error'));
+    }
+    return dataDisplay();
   }
 
   hasError = () => {
@@ -112,15 +130,15 @@ class EditDialog extends React.Component {
     });
     if (name === data.name && email === data.email) change = true;
 
-    return !(check === 2 && !change);
-  }
+    return this.setState({ sub: (!(check === 2 && !change)) });
+  };
 
   render() {
     const {
-      name, email, err,
+      name, email, err, spinner, sub,
     } = this.state;
-    const sub = this.hasError();
-    const { open, onClose } = this.props;
+    const { open, onClose, classes } = this.props;
+
     return (
       <SnackBarConsumer>
         {openSnackBar => (
@@ -190,8 +208,15 @@ class EditDialog extends React.Component {
                 <Button onClick={onClose} color="primary">
                   Cancel
                 </Button>
-                <Button disabled={sub} onClick={() => this.submitHandler(openSnackBar)} color="primary" autoFocus>
+                <Button disabled={sub} onClick={e => this.submitHandler(e, openSnackBar)} color="primary" autoFocus>
                   Submit
+                  {(spinner) ? (
+                    <CircularProgress
+                      style={{ position: 'absolute', bottom: 0 }}
+                      className={classes.progress}
+                      color="secondary"
+                    />
+                  ) : ''}
                 </Button>
               </DialogActions>
             </Dialog>
@@ -209,9 +234,12 @@ EditDialog.propTypes = {
   onClose: PropTypes.func,
   data: PropTypes.shape().isRequired,
   dataDisplay: PropTypes.func,
+  classes: PropTypes.func,
+
 };
 EditDialog.defaultProps = {
   open: false,
   onClose: () => {},
   dataDisplay: () => {},
+  classes: () => {},
 };
